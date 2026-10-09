@@ -1,0 +1,192 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index 8aa3e60..e34b084 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -1,5 +1,17 @@
+ # Changelog
+ 
++## 5.2.7 — 2026-10-09
++
++- Add a fail-closed, truth-preserving fallback when a host-required read-only workspace intake provider is unavailable.
++- Require agents to distinguish a missing connector from a successful intake and to use only host-named local entry documents as fallback evidence.
++- Protect the degraded-intake guidance with canonical source validation.
++
++## 5.2.6 — 2026-10-09
++
++- Accept `-WorkspacePath` as a compatibility alias for the canonical resolver's `-StartPath` parameter.
++- Require agents to inspect an installed resolver's declared parameters instead of guessing across mirror versions.
++- Preserve the resolver alias with canonical source validation.
++
+ ## 5.2.5 — 2026-09-22
+ 
+ - Validate explicit `PACK_ROOT` candidates and root environment variables before discovery can fall back to another local pack.
+diff --git a/SKILL.md b/SKILL.md
+index baa3990..5c00ed3 100644
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -12,7 +12,7 @@ description: >
+   that must satisfy CONST-GATE-001 and CONST-DONE-001.
+ metadata:
+   short-description: "Enforce AGENTS Constitution pack"
+-  skill-version: "5.2.5"
++  skill-version: "5.2.7"
+   pack-version-pin: "5.1.0"
+   canonical-source: "MrWizard94-Compile/Agents-Constitution"
+   canonical-url: "https://github.com/MrWizard94-Compile/Agents-Constitution"
+@@ -48,6 +48,17 @@ current work is judged.
+ If the canonical source is temporarily unavailable, a previously verified local
+ copy may be used, but the degraded-sync condition must be disclosed.
+ 
++## Host-intake preflight (when required)
++
++When host or system instructions require a read-only workspace intake provider
++before non-trivial work, attempt that named provider before substantive project
++actions. If the provider or tool is absent, unreachable, or unregistered, disclose
++the exact degraded-intake condition and never claim the intake ran. Read only the
++host-named local entry documents as fallback evidence, and continue only when they
++establish the project boundary, authority constraints, and safe routing needed for
++the task. If the host instruction makes the provider a hard stop and supplies no
++fallback, stop and ask the human rather than inventing intake results.
++
+ ## Mandatory evolution invariant
+ 
+ **Every top-level invocation of this skill MUST make at least one meaningful,
+@@ -128,6 +139,15 @@ valid **pack** root for binding law (stop at the first valid pack):
+ 4. Check siblings of those walk stops for a folder that is a valid pack
+ 5. Run `scripts/resolve-pack.ps1` if present in the installed distribution
+ 
++Installed mirrors can legitimately expose different resolver parameter names while
++an accepted revision is being propagated. Before passing a workspace/start path to
++the installed resolver, inspect that script's declared parameters (for example with
++`Get-Command <resolver-path>`). Pass `-StartPath` when declared, otherwise pass
++`-WorkspacePath` when declared; if neither is available, complete steps 1–4 and run
++the resolver without a guessed path parameter. Never treat a parameter-binding error
++as proof that no pack exists. The canonical resolver accepts `-WorkspacePath` as an
++alias for `-StartPath` so newer mirrors remain compatible with either invocation.
++
+ A path is **valid** only if all exist relative to it:
+ 
+ - `VERSION`
+diff --git a/SOURCE.json b/SOURCE.json
+index 61c3873..ab96963 100644
+--- a/SOURCE.json
++++ b/SOURCE.json
+@@ -1,7 +1,7 @@
+ {
+   "schema": 1,
+   "name": "agents-constitution",
+-  "skill_version": "5.2.5",
++  "skill_version": "5.2.7",
+   "pack_version_pin": "5.1.0",
+   "canonical_repository": "MrWizard94-Compile/Agents-Constitution",
+   "canonical_url": "https://github.com/MrWizard94-Compile/Agents-Constitution",
+diff --git a/VERSION b/VERSION
+index 462faf7..32a4068 100644
+--- a/VERSION
++++ b/VERSION
+@@ -1 +1 @@
+-5.2.5
++5.2.7
+diff --git a/evolution/LEDGER.md b/evolution/LEDGER.md
+index 6940ad2..7853dba 100644
+--- a/evolution/LEDGER.md
++++ b/evolution/LEDGER.md
+@@ -2,6 +2,54 @@
+ 
+ The ledger is evidence of evolution. A ledger entry, version bump, changelog edit, or formatting-only diff never counts as the meaningful improvement by itself.
+ 
++## 2026-10-09 — Truth-preserving fallback for unavailable host intake
++
++**Observed issue:** a host required a named read-only workspace intake provider,
++but the provider was absent from the tool catalog and its MCP server was
++unregistered. Without an explicit fallback rule, an agent could falsely imply the
++intake ran, stop despite sufficient local routing law, or continue without making
++the degraded condition visible.
++
++**Meaningful improvement:** the canonical skill now requires an attempted named
++intake before substantive project actions, exact disclosure when it is unavailable,
++and a bounded fallback to host-named local entry documents only when they establish
++the project boundary, authority constraints, and safe routing. A host-declared hard
++stop still blocks work.
++
++**Future failure reduced:** governed work is less likely to proceed on fabricated
++intake evidence or to deadlock unnecessarily when an optional connector is missing,
++while host authority and fail-closed behavior remain intact.
++
++**Changed paths:** `SKILL.md`, `tools/validate-source.py`, `VERSION`, `SOURCE.json`,
++`CHANGELOG.md`, and `evolution/LEDGER.md`.
++
++**Validation target:** `python tools/validate-source.py`, a missing-provider review
++case, canonical CI, and the evolution guard after an authorized commit.
++
++## 2026-10-09 — Version-tolerant resolver start-path invocation
++
++**Observed issue:** an installed generated mirror accepted `-StartPath`, while an
++invocation guessed `-WorkspacePath` and failed at PowerShell parameter binding before
++pack discovery could run. Different accepted mirror revisions can otherwise turn a
++valid local pack into a false “not found” diagnosis.
++
++**Meaningful improvement:** the canonical resolver now accepts `-WorkspacePath` as
++an alias for `-StartPath`; Step 0 requires parameter discovery against the installed
++resolver before passing a start path; and source validation protects the alias from
++regression.
++
++**Future failure reduced:** agents are less likely to treat a mirror-schema mismatch
++as a missing Constitution pack, skip binding law, or waste time retrying guessed
++parameters.
++
++**Changed paths:** `SKILL.md`, `scripts/resolve-pack.ps1`,
++`tools/validate-source.py`, `VERSION`, `SOURCE.json`, `CHANGELOG.md`,
++`evolution/LEDGER.md`.
++
++**Validation target:** `python tools/validate-source.py`, PowerShell parser checks,
++both `-StartPath` and `-WorkspacePath` resolver invocations against the same valid
++pack, and canonical CI/evolution guard after an authorized commit.
++
+ ## 2026-09-22 — Explicit PACK_ROOT validation cannot silently fall through
+ 
+ **Meaningful improvement:** `resolve-pack.ps1` now validates a human-specified
+diff --git a/scripts/resolve-pack.ps1 b/scripts/resolve-pack.ps1
+index 5978e75..2d56fc3 100644
+--- a/scripts/resolve-pack.ps1
++++ b/scripts/resolve-pack.ps1
+@@ -6,6 +6,7 @@
+   Discovery order matches SKILL.md Step 0.
+   Prints the absolute pack root path to stdout on success; exit 0.
+   Exit 1 if not found. Optional -SkillDir for pack-root.local lookup.
++  -StartPath also accepts the legacy/distribution-friendly alias -WorkspacePath.
+   -RequestedPackRoot validates a human-specified root without falling back.
+   This locates binding pack law. It does not locate skill source; skill source is
+   https://github.com/MrWizard94-Compile/Agents-Constitution.
+@@ -13,6 +14,7 @@
+ [CmdletBinding()]
+ param(
+     [string]$SkillDir = "",
++    [Alias("WorkspacePath")]
+     [string]$StartPath = "",
+     [Alias("PackRoot")]
+     [string]$RequestedPackRoot = ""
+diff --git a/tools/validate-source.py b/tools/validate-source.py
+index 105ce02..546c4c7 100644
+--- a/tools/validate-source.py
++++ b/tools/validate-source.py
+@@ -89,6 +89,19 @@ def main() -> int:
+     if "github.com/mrwizard94-compile/agents-constitution" not in skill:
+         fail("SKILL.md must point at the canonical GitHub repository")
+ 
++    intake_requirements = (
++        "Host-intake preflight (when required)",
++        "never claim the intake ran",
++        "host-named local entry documents as fallback evidence",
++    )
++    for requirement in intake_requirements:
++        if normalize_prose(requirement) not in skill:
++            fail(f"SKILL.md missing host-intake safeguard: {requirement}")
++
++    resolver = (ROOT / "scripts/resolve-pack.ps1").read_text(encoding="utf-8-sig")
++    if not re.search(r'\[Alias\(["\']WorkspacePath["\']\)\]\s*\[string\]\$StartPath', resolver, re.IGNORECASE):
++        fail("resolve-pack.ps1 StartPath must retain the WorkspacePath compatibility alias")
++
+     generated_markers = list(ROOT.rglob(".GENERATED-MIRROR.json"))
+     if generated_markers:
+         fail("generated-mirror marker must never be committed to canonical source")

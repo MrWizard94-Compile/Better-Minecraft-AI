@@ -1,0 +1,60 @@
+[09Oct2026 16:46:02.678] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeserverdev, --gameDir, ., --fml.fmlVersion, 4.0.45, --fml.mcVersion, 1.21.1, --fml.neoForgeVersion, 21.1.256, --fml.neoFormVersion, 20240808.144430]
+[09Oct2026 16:46:02.681] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: JVM identified as Eclipse Adoptium OpenJDK 64-Bit Server VM 21.0.10+7-LTS
+[09Oct2026 16:46:02.682] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 11.0.5+main.901c6ea8 starting: java version 21.0.10 by Eclipse Adoptium; OS Windows 11 arch amd64 version 10.0
+[09Oct2026 16:46:02.806] [main/INFO] [net.neoforged.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because launch target is forgeserverdev
+[09Oct2026 16:46:02.852] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=union:/C:/Users/Bulkl/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.16.4+mixin.0.8.7/26d01f0567ab46e9ca0d2ed89d0ecc11aadbd433/sponge-mixin-0.16.4+mixin.0.8.7.jar%2394!/ Service=ModLauncher Env=SERVER
+[09Oct2026 16:46:03.474] [main/INFO] [net.neoforged.fml.loading.moddiscovery.locators.JarInJarDependencyLocator/]: Found 2 dependencies adding them to mods collection
+[09Oct2026 16:46:03.476] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: 
+     Mod List:
+		Name Version (Mod Id)
+
+		Better Minecraft AI 0.1.0-p0 (better_minecraft_ai)
+		Minecraft 1.21.1 (minecraft)
+		NeoForge 21.1.256 (neoforge)
+[09Oct2026 16:46:04.310] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeserverdev' with arguments [--gameDir, .]
+[09Oct2026 16:46:05.589] [main/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.5).
+[09Oct2026 16:46:10.274] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[09Oct2026 16:46:10.277] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[09Oct2026 16:46:10.279] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[09Oct2026 16:46:10.281] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[09Oct2026 16:46:10.282] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[09Oct2026 16:46:10.352] [modloading-worker-0/INFO] [net.neoforged.neoforge.common.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 21.1.256, for MC 1.21.1
+[09Oct2026 16:46:10.361] [modloading-worker-0/INFO] [com.mrwizard94.betterminecraftai.BetterMinecraftAi/]: Better Minecraft AI P0 initialized in observation-only mode
+[09Oct2026 16:46:10.687] [main/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[09Oct2026 16:46:10.821] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/WPAI/Gaming/Minecraft/Mods-1.21.1-NeoForge/Better%20Minecraft%20AI/build/moddev/artifacts/neoforge-21.1.256.jar%23125!/assets/.mcassetsroot' uses unexpected schema
+[09Oct2026 16:46:10.822] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/WPAI/Gaming/Minecraft/Mods-1.21.1-NeoForge/Better%20Minecraft%20AI/build/moddev/artifacts/neoforge-21.1.256.jar%23125!/data/.mcassetsroot' uses unexpected schema
+[09Oct2026 16:46:10.828] [main/INFO] [net.neoforged.neoforge.gametest.GameTestHooks/]: Enabled Gametest Namespaces: [better_minecraft_ai]
+[09Oct2026 16:46:11.779] [main/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 1291 recipes
+[09Oct2026 16:46:11.943] [main/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1400 advancements
+[09Oct2026 16:46:12.609] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[09Oct2026 16:46:12.731] [worldgen/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 2%
+[09Oct2026 16:46:13.115] [worldgen/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 73%
+[09Oct2026 16:46:13.518] [Server thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 909 ms
+[09Oct2026 16:46:13.531] [Server thread/INFO] [net.minecraft.gametest.framework.GameTestServer/]: Started game test server
+[09Oct2026 16:46:13.546] [Server thread/INFO] [net.neoforged.neoforge.server.permission.PermissionAPI/]: Successfully initialized permission handler neoforge:default_handler
+[09Oct2026 16:46:13.621] [Server thread/INFO] [net.minecraft.gametest.framework.GameTestServer/]: 7 tests are now running at position -3146999, -59, -1502303!
+[09Oct2026 16:46:13.970] [Server thread/INFO] [net.minecraft.gametest.framework.GameTestRunner/]: Running test batch 'defaultBatch:0' (7 tests)...
+[09Oct2026 16:46:14.210] [Server thread/INFO] [net.minecraft.gametest.framework.GameTestServer/]: [       ]
+[09Oct2026 16:46:14.302] [Server thread/INFO] [net.minecraft.gametest.framework.GameTestServer/]: [++     ]
+[09Oct2026 16:46:14.369] [Server thread/INFO] [net.minecraft.gametest.framework.GameTestServer/]: [++_____]
+[09Oct2026 16:46:14.412] [Server thread/INFO] [net.minecraft.gametest.framework.GameTestServer/]: [++_____]
+[09Oct2026 16:46:14.450] [Server thread/INFO] [net.minecraft.gametest.framework.GameTestServer/]: [++_____]
+[09Oct2026 16:46:14.483] [Server thread/INFO] [net.minecraft.gametest.framework.GameTestServer/]: [++_____]
+[09Oct2026 16:46:14.516] [Server thread/INFO] [net.minecraft.gametest.framework.GameTestServer/]: [++_____]
+[09Oct2026 16:46:14.554] [Server thread/INFO] [net.minecraft.gametest.framework.GameTestServer/]: [++++___]
+[09Oct2026 16:46:14.586] [Server thread/INFO] [net.minecraft.gametest.framework.GameTestServer/]: [+++++++]
+[09Oct2026 16:46:14.588] [Server thread/INFO] [net.minecraft.gametest.framework.GameTestServer/]: ========= 7 GAME TESTS COMPLETE IN 965.4 ms ======================
+[09Oct2026 16:46:14.589] [Server thread/INFO] [net.minecraft.gametest.framework.GameTestServer/]: All 7 required tests passed :)
+[09Oct2026 16:46:14.589] [Server thread/INFO] [net.minecraft.gametest.framework.GameTestServer/]: ====================================================
+[09Oct2026 16:46:14.599] [Server thread/INFO] [com.mrwizard94.betterminecraftai.BetterMinecraftAi/]: BMAI_P0_OBSERVE_SUMMARY enabled=false joined=0 attached=0 samples=0 idle=0 stationary=0 moving=0 pending=0 active=0 handlerNanos=0
+[09Oct2026 16:46:14.600] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[09Oct2026 16:46:14.601] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[09Oct2026 16:46:14.601] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[09Oct2026 16:46:15.115] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[Test Level]'/minecraft:overworld
+[09Oct2026 16:46:15.749] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[Test Level]'/minecraft:the_end
+[09Oct2026 16:46:15.767] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[Test Level]'/minecraft:the_nether
+[09Oct2026 16:46:15.804] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (p0-smoke): All chunks are saved
+[09Oct2026 16:46:15.804] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[09Oct2026 16:46:15.804] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[09Oct2026 16:46:15.805] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
+[09Oct2026 16:46:15.881] [Server thread/INFO] [net.minecraft.gametest.framework.GameTestServer/]: Game test server shutting down

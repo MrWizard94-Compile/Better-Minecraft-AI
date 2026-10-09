@@ -1,0 +1,5 @@
+# Better Minecraft AI 0.1.0-p0 implements observation only.
+# true: record bounded server-side lifecycle and motion metrics.
+# false: attach no observer and perform no per-entity sampling.
+# Restart at a normal server lifecycle boundary after changing this value.
+observation_enabled = true

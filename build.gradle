@@ -1,0 +1,267 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'net.neoforged.moddev' version '2.0.148'
+    id 'checkstyle'
+    id 'jacoco'
+    id 'idea'
+}
+
+version = mod_version
+group = mod_group_id
+
+base {
+    archivesName = mod_id
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+}
+
+neoForge {
+    version = project.neo_version
+
+    parchment {
+        minecraftVersion = project.parchment_minecraft_version
+        mappingsVersion = project.parchment_mappings_version
+    }
+
+    runs {
+        client {
+            client()
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+            systemProperty 'better_minecraft_ai.integrated_smoke',
+                    providers.gradleProperty('bmaiIntegratedSmoke').getOrElse('false')
+            def worldName = providers.gradleProperty('bmaiQuickPlayWorld').orNull
+            if (worldName != null) {
+                programArguments.addAll('--quickPlaySingleplayer', worldName)
+            }
+        }
+
+        server {
+            server()
+            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        gameTestServer {
+            type = 'gameTestServer'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+            systemProperty 'better_minecraft_ai.benchmark.arm',
+                    providers.gradleProperty('bmaiBenchmarkArm').getOrElse('observe')
+            systemProperty 'better_minecraft_ai.observation.enabled',
+                    providers.gradleProperty('bmaiObservationEnabled').getOrElse('true')
+            systemProperty 'better_minecraft_ai.benchmark.output',
+                    providers.gradleProperty('bmaiBenchmarkOutputDir')
+                            .getOrElse(layout.buildDirectory.dir('p0-benchmark-data').get().asFile.absolutePath)
+        }
+
+        data {
+            data()
+            programArguments.addAll(
+                    '--mod', project.mod_id,
+                    '--all',
+                    '--output', file('src/generated/resources/').absolutePath,
+                    '--existing', file('src/main/resources/').absolutePath)
+        }
+
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.INFO
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
+    }
+}
+
+sourceSets.main.resources {
+    srcDir('src/generated/resources')
+    exclude('**/*.bbmodel')
+    exclude('src/generated/**/.cache')
+}
+
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
+
+dependencies {
+    compileOnly "org.jspecify:jspecify:${jspecify_version}"
+    testCompileOnly "org.jspecify:jspecify:${jspecify_version}"
+    testImplementation "org.junit.jupiter:junit-jupiter:${junit_version}"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher:${junit_platform_version}"
+}
+
+dependencyLocking {
+    lockAllConfigurations()
+}
+
+def generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {
+    def replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version            : neo_version,
+            loader_version_range   : loader_version_range,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_version            : mod_version,
+            mod_authors            : mod_authors,
+            mod_description        : mod_description,
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from 'src/main/templates'
+    into layout.buildDirectory.dir('generated/sources/modMetadata')
+}
+
+sourceSets.main.resources.srcDir(generateModMetadata)
+neoForge.ideSyncTask(generateModMetadata)
+
+checkstyle {
+    toolVersion = checkstyle_version
+    configFile = file('config/checkstyle/checkstyle.xml')
+    maxErrors = 0
+    maxWarnings = 0
+}
+
+tasks.withType(Checkstyle).configureEach {
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+jacoco {
+    toolVersion = jacoco_version
+}
+
+def domainClasses = {
+    sourceSets.main.output.classesDirs.asFileTree.matching {
+        include 'com/mrwizard94/betterminecraftai/domain/**'
+    }
+}
+
+tasks.named('test', Test).configure {
+    useJUnitPlatform()
+    finalizedBy tasks.named('jacocoTestReport')
+}
+
+tasks.named('jacocoTestReport', JacocoReport).configure {
+    dependsOn tasks.named('test')
+    classDirectories.setFrom(files(domainClasses))
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = true
+    }
+}
+
+tasks.named('jacocoTestCoverageVerification', JacocoCoverageVerification).configure {
+    dependsOn tasks.named('test')
+    classDirectories.setFrom(files(domainClasses))
+    violationRules {
+        rule {
+            element = 'BUNDLE'
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 1.0
+            }
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 1.0
+            }
+        }
+    }
+}
+
+tasks.named('check').configure {
+    dependsOn tasks.named('jacocoTestCoverageVerification')
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs.addAll(['-Xlint:all', '-Werror'])
+}
+
+tasks.withType(Jar).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+tasks.named('wrapper', Wrapper).configure {
+    distributionType = Wrapper.DistributionType.BIN
+}
+
+def prepareP0DedicatedServer = tasks.register('prepareP0DedicatedServer', Copy) {
+    description = 'Installs the tracked loopback-only P0 dedicated-server smoke configuration.'
+    from layout.projectDirectory.file('config/p0-server.properties')
+    into layout.projectDirectory.dir('run')
+    rename { 'server.properties' }
+}
+
+tasks.named('runServer').configure {
+    dependsOn prepareP0DedicatedServer
+    standardInput = System.in
+    notCompatibleWithConfigurationCache('Interactive server console input is required for a clean stop command.')
+}
+
+def prepareP0ClientOptions = tasks.register('prepareP0ClientOptions', Copy) {
+    description = 'Installs the tracked P0 client options used by unattended quick-play smoke runs.'
+    from layout.projectDirectory.file('config/p0-client-options.txt')
+    into layout.projectDirectory.dir('run')
+    rename { 'options.txt' }
+}
+
+tasks.named('runClient').configure {
+    if (providers.gradleProperty('bmaiQuickPlayWorld').isPresent()) {
+        dependsOn prepareP0ClientOptions
+    }
+}
+
+def buildEnvironmentText = [
+        "Gradle=${gradle.gradleVersion}",
+        "Java=${JavaVersion.current()}",
+        "Minecraft=${minecraft_version}",
+        "NeoForge=${neo_version}",
+        'ModDevGradle=2.0.148',
+        "Parchment=${parchment_minecraft_version}-${parchment_mappings_version}",
+        "Checkstyle=${checkstyle_version}",
+        "JaCoCo=${jacoco_version}",
+        "JUnit=${junit_version}",
+        "JSpecify=${jspecify_version}",
+].join(System.lineSeparator())
+
+tasks.register('printBuildEnvironment') {
+    group = 'help'
+    description = 'Prints the exact direct toolchain and dependency pins used by P0.'
+    inputs.property('environmentText', buildEnvironmentText)
+    doLast {
+        println buildEnvironmentText
+    }
+}
+
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}

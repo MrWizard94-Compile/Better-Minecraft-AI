@@ -1,0 +1,200 @@
+{
+  "schema_version": 1,
+  "phase": "P0",
+  "interpretation": "Descriptive baseline only; five replicates are insufficient for inferential or release-performance claims.",
+  "protocol": {
+    "matched_fields": [
+      "scenario",
+      "replicate",
+      "world_seed",
+      "entity_count",
+      "warmup_ticks"
+    ],
+    "expected_replicates_per_arm": 5,
+    "final_distance_equivalence_tolerance_blocks": 0.001,
+    "percentile_method": "nearest-rank"
+  },
+  "vanilla_control": {
+    "arm": "vanilla_control",
+    "scenario": "open_plain_1",
+    "samples": 5,
+    "successes": 5,
+    "success_rate": 1.0,
+    "exceptions": 0,
+    "metrics": {
+      "duration_ticks": {
+        "mean": 113.4,
+        "median": 113.0,
+        "p95_nearest_rank": 114.0,
+        "minimum": 113.0,
+        "maximum": 114.0
+      },
+      "final_distance": {
+        "mean": 1.286011,
+        "median": 1.285962,
+        "p95_nearest_rank": 1.286354,
+        "minimum": 1.285801,
+        "maximum": 1.286354
+      },
+      "path_nodes": {
+        "mean": 14.0,
+        "median": 14.0,
+        "p95_nearest_rank": 14.0,
+        "minimum": 14.0,
+        "maximum": 14.0
+      },
+      "stall_ticks": {
+        "mean": 0.0,
+        "median": 0.0,
+        "p95_nearest_rank": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      "observer_handler_nanos": {
+        "mean": 0.0,
+        "median": 0.0,
+        "p95_nearest_rank": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      "tick_median_ms": {
+        "mean": 1.60252,
+        "median": 1.5883,
+        "p95_nearest_rank": 1.6615,
+        "minimum": 1.515,
+        "maximum": 1.6615
+      },
+      "tick_p95_ms": {
+        "mean": 2.86976,
+        "median": 2.6942,
+        "p95_nearest_rank": 3.3041,
+        "minimum": 2.6942,
+        "maximum": 3.3041
+      },
+      "tick_p99_ms": {
+        "mean": 3.79532,
+        "median": 3.3258,
+        "p95_nearest_rank": 4.4996,
+        "minimum": 3.3258,
+        "maximum": 4.4996
+      }
+    }
+  },
+  "observe": {
+    "arm": "observe",
+    "scenario": "open_plain_1",
+    "samples": 5,
+    "successes": 5,
+    "success_rate": 1.0,
+    "exceptions": 0,
+    "metrics": {
+      "duration_ticks": {
+        "mean": 113.4,
+        "median": 113.0,
+        "p95_nearest_rank": 114.0,
+        "minimum": 113.0,
+        "maximum": 114.0
+      },
+      "final_distance": {
+        "mean": 1.285797,
+        "median": 1.285783,
+        "p95_nearest_rank": 1.285859,
+        "minimum": 1.285763,
+        "maximum": 1.285859
+      },
+      "path_nodes": {
+        "mean": 14.0,
+        "median": 14.0,
+        "p95_nearest_rank": 14.0,
+        "minimum": 14.0,
+        "maximum": 14.0
+      },
+      "stall_ticks": {
+        "mean": 0.0,
+        "median": 0.0,
+        "p95_nearest_rank": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      "observer_handler_nanos": {
+        "mean": 1545080.0,
+        "median": 1565900.0,
+        "p95_nearest_rank": 1569100.0,
+        "minimum": 1468900.0,
+        "maximum": 1569100.0
+      },
+      "tick_median_ms": {
+        "mean": 1.65912,
+        "median": 1.6176,
+        "p95_nearest_rank": 1.7477,
+        "minimum": 1.5683,
+        "maximum": 1.7477
+      },
+      "tick_p95_ms": {
+        "mean": 4.78512,
+        "median": 4.3802,
+        "p95_nearest_rank": 5.3925,
+        "minimum": 4.3802,
+        "maximum": 5.3925
+      },
+      "tick_p99_ms": {
+        "mean": 7.16304,
+        "median": 6.8636,
+        "p95_nearest_rank": 7.6122,
+        "minimum": 6.8636,
+        "maximum": 7.6122
+      }
+    }
+  },
+  "paired_behavior": {
+    "behaviorally_matched": true,
+    "maximum_absolute_final_distance_delta_blocks": 0.000591,
+    "samples": [
+      {
+        "key": "open_plain_1|1|0|1|20",
+        "replicate": 1,
+        "success_matches": true,
+        "duration_delta_ticks": 0,
+        "path_nodes_delta": 0,
+        "stall_ticks_delta": 0,
+        "final_distance_delta": 1E-05
+      },
+      {
+        "key": "open_plain_1|2|0|1|20",
+        "replicate": 2,
+        "success_matches": true,
+        "duration_delta_ticks": 0,
+        "path_nodes_delta": 0,
+        "stall_ticks_delta": 0,
+        "final_distance_delta": -0.000129
+      },
+      {
+        "key": "open_plain_1|3|0|1|20",
+        "replicate": 3,
+        "success_matches": true,
+        "duration_delta_ticks": 0,
+        "path_nodes_delta": 0,
+        "stall_ticks_delta": 0,
+        "final_distance_delta": -0.000591
+      },
+      {
+        "key": "open_plain_1|4|0|1|20",
+        "replicate": 4,
+        "success_matches": true,
+        "duration_delta_ticks": 0,
+        "path_nodes_delta": 0,
+        "stall_ticks_delta": 0,
+        "final_distance_delta": -0.000168
+      },
+      {
+        "key": "open_plain_1|5|0|1|20",
+        "replicate": 5,
+        "success_matches": true,
+        "duration_delta_ticks": 0,
+        "path_nodes_delta": 0,
+        "stall_ticks_delta": 0,
+        "final_distance_delta": -0.000193
+      }
+    ]
+  }
+}

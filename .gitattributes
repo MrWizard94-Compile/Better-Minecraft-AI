@@ -1,0 +1,12 @@
+# Keep cross-platform source and evidence deterministic regardless of a contributor's autocrlf setting.
+* text=auto eol=lf
+*.bat text eol=crlf
+*.jar binary
+*.nbt binary
+
+# Preserve supplied Markdown hard breaks, unified-diff context markers, and raw runtime logs exactly as evidence.
+Better_Minecraft_AI_Engineering_Blueprint.md whitespace=-blank-at-eol
+Better_Minecraft_AI_Definition_of_Done.md whitespace=-blank-at-eol
+docs/release-evidence/**/constitution-skill-evolution.patch whitespace=-blank-at-eol
+docs/release-evidence/**/runtime/*.log whitespace=-blank-at-eol
+docs/release-evidence/**/runtime/*.log -text

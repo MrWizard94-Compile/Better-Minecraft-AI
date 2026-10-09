@@ -1,0 +1,6 @@
+arm,scenario,replicate,world_seed,entity_count,warmup_ticks,duration_ticks,success,final_distance,path_nodes,stall_ticks,observer_handler_nanos,tick_median_ms,tick_p95_ms,tick_p99_ms,exceptions
+vanilla_control,open_plain_1,4,0,1,20,113,true,1.285951,14,0,0,1.661500,2.962100,4.499600,0
+vanilla_control,open_plain_1,5,0,1,20,114,true,1.285962,14,0,0,1.661500,3.304100,4.499600,0
+vanilla_control,open_plain_1,1,0,1,20,113,true,1.285801,14,0,0,1.588300,2.694200,3.325800,0
+vanilla_control,open_plain_1,2,0,1,20,114,true,1.285988,14,0,0,1.586300,2.694200,3.325800,0
+vanilla_control,open_plain_1,3,0,1,20,113,true,1.286354,14,0,0,1.515000,2.694200,3.325800,0
