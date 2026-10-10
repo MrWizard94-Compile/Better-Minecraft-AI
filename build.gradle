@@ -102,6 +102,10 @@ dependencies {
 
 dependencyLocking {
     lockAllConfigurations()
+
+    // NeoForm selects this native module only on Linux. Its version remains strictly fixed by the
+    // pinned minecraft-dependencies metadata, and dependency verification pins both Linux JARs.
+    ignoredDependencies.add('io.netty:netty-transport-native-epoll')
 }
 
 def generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {
