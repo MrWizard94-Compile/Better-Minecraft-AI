@@ -1,6 +1,6 @@
 # Better Minecraft AI
 
-Better Minecraft AI is an evidence-first NeoForge 1.21.1 research project for safer entity-navigation improvements. The current `0.1.0-p0` tree is **Phase P0 foundation work only**. It does not ship better pathfinding, replace a vanilla entity's AI, or claim an A1 release.
+Better Minecraft AI is an evidence-first NeoForge 1.21.1 research project for safer entity-navigation improvements. Phase P0 is accepted, and the `codex/p1-eligibility-safe-ownership` branch now contains the first **P1-in-progress** Minecraft-independent eligibility and ownership-state foundation. The built mod remains `0.1.0-p0` and OBSERVE-only: it does not yet ship better pathfinding, production navigation ownership, or an A1 release.
 
 P0 provides:
 
@@ -12,7 +12,16 @@ P0 provides:
 - dedicated-server and integrated-client smoke evidence; and
 - exact-source hook and external-framework decision records.
 
-Phase P0 was explicitly accepted by the director on 2026-10-11 after the committed candidate passed local validation and native Windows/Ubuntu CI. This is `P0 DONE` only: Phase P1 and all major AI replacement work remain separate, unstarted scopes.
+Phase P0 was explicitly accepted by the director on 2026-10-11 after the committed candidate passed local validation and native Windows/Ubuntu CI. P1 work is now proceeding as separately scoped, reviewable slices. The current P1 slice adds no Minecraft-side controller and makes no navigation-improvement claim.
+
+## P1 status
+
+The active [P1 plan](docs/P1_PLAN.md) begins with two pure-Java safety boundaries:
+
+- a C0-only profile resolver with hard-exclusion, administrator-deny, per-entity, tag, and global precedence plus an immutable provenance trace; and
+- a UUID-keyed lifecycle registry and explicit `VANILLA_OWNED` → `TRANSITIONING` → `ENHANCED_OWNED` state machine that refuses cleanup before vanilla ownership is restored.
+
+Unsupported ENHANCED requests fail closed to OBSERVE. Brain-controlled entities, bosses, specialist navigators, externally owned entities, and every non-C0 entity remain ineligible for the P1 lease. Minecraft config/events, the production C0 lease, commands, and lifecycle GameTests are the next slices and are not represented as implemented here.
 
 ## Supported environment
 
@@ -111,4 +120,4 @@ Known boundaries:
 - Windows and native Ubuntu GitHub CI are green for the accepted candidate in [run 38157185309](https://github.com/MrWizard94-Compile/Better-Minecraft-AI/actions/runs/38157185309); and
 - upstream development-runtime warnings are catalogued in [KNOWN_UPSTREAM_WARNINGS.md](docs/KNOWN_UPSTREAM_WARNINGS.md), not suppressed.
 
-P0 acceptance does not make any A1 gate pass and does not authorize a tag, package publication, installation, or public release. Begin P1 only as a separate, explicitly scoped increment that preserves the accepted P0 baseline.
+P0 acceptance and P1 progress do not make any A1 gate pass and do not authorize a tag, package publication, installation, or public release. The accepted P0 baseline remains the regression boundary for every P1 change.

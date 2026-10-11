@@ -11,9 +11,9 @@ The complete ready-to-apply patch is [`constitution-skill-evolution.patch`](cons
 | Canonical repository | `https://github.com/MrWizard94-Compile/Agents-Constitution` |
 | Frozen base revision | `969ae2caa33c1e4c9de325282fe6029e35a1caea` |
 | Base skill version | 5.2.5 |
-| Proposed skill version | 5.2.9 |
-| Patch bytes | 16,488 |
-| Patch SHA-256 | `E8CDA20E0DF1C040107BFD54D7FDBF533FD63560358B377BFC17598C59F88F6A` |
+| Proposed skill version | 5.2.10 |
+| Patch bytes | 20,745 |
+| Patch SHA-256 | `6E8BFEF74D045CC2C50B3038D4FC702DA7A9377899204FC868F9A1EAA82AFA1E` |
 
 ## Reusable improvement
 
@@ -32,7 +32,9 @@ An installed generated mirror accepted `-StartPath`, while a caller could reason
 - distinguishes green candidate evidence from explicit human acceptance when a project contract has an approval gate;
 - forbids inferring milestone approval from commit/push authorization, review activity, silence, or another phase's approval;
 - requires the exact human decision, date, immutable accepted revision, limitations, and remaining authorization boundaries to be retained while higher-phase gates remain `NOT RUN`;
-- adds canonical validator assertions so the resolver alias, host-intake safeguards, cross-platform dependency closure, and human approval boundary cannot silently regress; and
+- separates controller availability, launch acknowledgement, process liveness, handshake, candidate load, runtime entry, behavior, and rollback evidence;
+- treats partially installed leftovers as failed, keeps mismatched-version runs auxiliary, and separates fixture failures from product failures;
+- adds canonical validator assertions so the resolver alias, host-intake safeguards, cross-platform dependency closure, human approval boundary, and runtime-control acceptance chain cannot silently regress; and
 - records the meaningful failure reduction in the evolution ledger.
 
 Changed canonical paths: `SKILL.md`, `scripts/resolve-pack.ps1`, `tools/validate-source.py`, `VERSION`, `SOURCE.json`, `CHANGELOG.md`, and `evolution/LEDGER.md`.
@@ -41,7 +43,7 @@ Changed canonical paths: `SKILL.md`, `scripts/resolve-pack.ps1`, `tools/validate
 
 A clean detached worktree at the frozen base accepted the patch with `git apply --check`. After applying the payload in that isolated worktree:
 
-- `python -X utf8 tools/validate-source.py` → PASS for canonical source v5.2.9;
+- `python -X utf8 tools/validate-source.py` → PASS for canonical source v5.2.10;
 - PowerShell AST parse of `scripts/resolve-pack.ps1` → PASS;
 - `-StartPath <BMAI workspace>` → `C:\WPAI\AGENTS Constitution`;
 - `-WorkspacePath <BMAI workspace>` → the same binding pack;
@@ -51,6 +53,13 @@ A clean detached worktree at the frozen base accepted the patch with `git apply 
 The cross-platform rule is grounded in this invocation's clean-runner evidence: a Windows-generated lock/verification state omitted Linux-selected Netty and LWJGL artifacts. The repair required native Ubuntu resolution, checksum corroboration, a narrowly scoped lock exception with strict version and checksum controls retained, and a required two-OS CI matrix.
 
 The approval-gate rule is grounded in the P0 acceptance lifecycle: executable evidence and authorized pushes produced a green candidate, but only the later exact director statement `I accept P0` completed the phase. The acceptance record preserves that statement, accepted SHA, date, limitations, and the fact that every A1 gate remains `NOT RUN`.
+
+The runtime-control rule is grounded in the P1 MCP fixture attempt. The installer
+returned an error but left a partial NeoForge 21.1.172 registration, and the launcher
+returned PID 3628 plus port 9876 before the process died without a handshake. The
+project pins NeoForge 21.1.256 and the candidate BMAI artifact was absent, so those
+signals are fixture diagnostics only: they prove neither BMAI runtime execution nor
+a BMAI failure.
 
 The new intake fallback is also grounded in an observed negative case from this
 invocation: `wpai_vault` was absent from the tool catalog and rejected as an unknown

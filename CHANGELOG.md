@@ -2,6 +2,20 @@
 
 All notable verified project changes are documented here. Planned features are not listed as shipped behavior.
 
+## Unreleased — P1 in progress
+
+### Added
+
+- Minecraft-independent C0 profile resolution with canonical entity identifiers, hard safety exclusions, explicit opt-outs, full precedence, fail-closed unsupported ENHANCED requests, and immutable provenance.
+- An explicit navigation-ownership transition controller that separates mode requests from exact lease acquisition/release/fallback side effects and keeps cleanup blocked until restoration is confirmed.
+- A UUID-keyed runtime registry that retains no live Minecraft object, rejects duplicate attachment, and refuses cleanup until vanilla ownership has been restored.
+- Twenty-four focused unit tests for the P1 domain contracts while retaining 100% MC-free line and branch coverage.
+
+### Not yet included
+
+- No Minecraft event/config wiring, production C0 goal lease, diagnostic command, P1 GameTest, improved navigation, or A1 evidence is claimed by this slice.
+- The auxiliary `minecraft-mod-mcp` NeoForge 1.21.1 fixture is not accepted: its installer returned `unexpected end of file`, registered NeoForge 21.1.172 instead of the project pin 21.1.256, and the resulting client exited during class resolution before connection.
+
 ## 0.1.0-p0 — accepted foundation
 
 ### Added

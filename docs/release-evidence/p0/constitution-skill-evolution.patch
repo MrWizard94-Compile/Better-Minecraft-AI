@@ -1,10 +1,16 @@
 diff --git a/CHANGELOG.md b/CHANGELOG.md
-index 8aa3e60..d880a90 100644
+index 8aa3e60..6b1beee 100644
 --- a/CHANGELOG.md
 +++ b/CHANGELOG.md
-@@ -1,5 +1,29 @@
+@@ -1,5 +1,35 @@
  # Changelog
  
++## 5.2.10 — 2026-10-11
++
++- Separate launcher/controller availability from a live, handshaken runtime connection and executed behavior.
++- Require exact target identity plus candidate artifact installation and load evidence before runtime credit.
++- Keep partial installer leftovers failed, classify version-mismatched runs as auxiliary only, and distinguish fixture failures from product failures.
++
 +## 5.2.9 — 2026-10-11
 +
 +- Separate green candidate evidence from explicit human acceptance when a project contract has an approval gate.
@@ -33,7 +39,7 @@ index 8aa3e60..d880a90 100644
  
  - Validate explicit `PACK_ROOT` candidates and root environment variables before discovery can fall back to another local pack.
 diff --git a/SKILL.md b/SKILL.md
-index baa3990..4f2598a 100644
+index baa3990..358efcd 100644
 --- a/SKILL.md
 +++ b/SKILL.md
 @@ -12,7 +12,7 @@ description: >
@@ -41,7 +47,7 @@ index baa3990..4f2598a 100644
  metadata:
    short-description: "Enforce AGENTS Constitution pack"
 -  skill-version: "5.2.5"
-+  skill-version: "5.2.9"
++  skill-version: "5.2.10"
    pack-version-pin: "5.1.0"
    canonical-source: "MrWizard94-Compile/Agents-Constitution"
    canonical-url: "https://github.com/MrWizard94-Compile/Agents-Constitution"
@@ -79,10 +85,35 @@ index baa3990..4f2598a 100644
  A path is **valid** only if all exist relative to it:
  
  - `VERSION`
-@@ -210,6 +230,43 @@ or other runtime assembled from third-party components:
+@@ -210,6 +230,68 @@ or other runtime assembled from third-party components:
     runtime acceptance. Credit the repair only after a clean relaunch and the
     relevant behavior flow pass.
  
++#### Runtime-control acceptance chain
++
++When a launcher, automation bridge, test harness, remote-control protocol, or
++similar tool is used to exercise the delivered runtime:
++
++1. Treat controller availability, a successful launch response, a process ID, and
++   an advertised control port as fixture preparation only. Require the target
++   process to remain alive and complete the controller handshake before crediting a
++   live connection.
++2. Record the controller and launcher versions, target application/runtime version,
++   project-pinned version, instance path, and candidate artifact hash and install
++   location. A mismatched target version is auxiliary compatibility evidence only,
++   never exact-pin acceptance.
++3. Prove the candidate is the code under test through the runtime's authoritative
++   mod/plugin/component list or logs. Then prove entry into the relevant title,
++   world, server, or workspace; query live state through the controller; exercise
++   the required behavior; and verify rollback or disablement where applicable.
++4. If an installer reports failure but leaves partial files, registrations, or a
++   launchable entry, the installation remains failed. Inspect the earliest fixture
++   construction error and do not credit leftovers or retry the same operation
++   blindly.
++5. Distinguish a third-party fixture construction or handshake failure from a
++   product failure. Do not infer a product result when the candidate was absent,
++   never loaded, or the control connection was never established.
++
 +#### Cross-platform dependency closure
 +
 +When a project declares more than one supported operating system or architecture:
@@ -124,7 +155,7 @@ index baa3990..4f2598a 100644
  
  1. Resolve `PACK_ROOT`; re-read Section 0 in pack `AGENTS.md` (canonical 15-point checklist).
 diff --git a/SOURCE.json b/SOURCE.json
-index 61c3873..1332f45 100644
+index 61c3873..4d3b9b8 100644
 --- a/SOURCE.json
 +++ b/SOURCE.json
 @@ -1,7 +1,7 @@
@@ -132,25 +163,53 @@ index 61c3873..1332f45 100644
    "schema": 1,
    "name": "agents-constitution",
 -  "skill_version": "5.2.5",
-+  "skill_version": "5.2.9",
++  "skill_version": "5.2.10",
    "pack_version_pin": "5.1.0",
    "canonical_repository": "MrWizard94-Compile/Agents-Constitution",
    "canonical_url": "https://github.com/MrWizard94-Compile/Agents-Constitution",
 diff --git a/VERSION b/VERSION
-index 462faf7..879fd97 100644
+index 462faf7..2228e0c 100644
 --- a/VERSION
 +++ b/VERSION
 @@ -1 +1 @@
 -5.2.5
-+5.2.9
++5.2.10
 diff --git a/evolution/LEDGER.md b/evolution/LEDGER.md
-index 6940ad2..cca35fb 100644
+index 6940ad2..917125d 100644
 --- a/evolution/LEDGER.md
 +++ b/evolution/LEDGER.md
-@@ -2,6 +2,106 @@
+@@ -2,6 +2,134 @@
  
  The ledger is evidence of evolution. A ledger entry, version bump, changelog edit, or formatting-only diff never counts as the meaningful improvement by itself.
  
++## 2026-10-11 — Runtime-control acceptance chain
++
++**Observed issue:** a runtime-control service accepted an install and launch request,
++registered a partially installed target, and returned a process ID plus advertised
++control port. The process then died before the control handshake, the installed
++loader did not match the project's pin, and the candidate product was never
++installed. Without an explicit evidence chain, these preparation signals could be
++misreported as runtime execution or as a product failure.
++
++**Meaningful improvement:** enforce mode now separates controller availability,
++launch acknowledgement, process liveness, handshake, candidate installation and
++load proof, application/world entry, live state queries, behavior execution, and
++rollback into distinct acceptance steps. It also keeps partial installer leftovers
++failed, restricts mismatched-version results to auxiliary evidence, and requires
++third-party fixture failures to be separated from product failures.
++
++**Future failure reduced:** agents are less likely to accept a returned PID as a
++running controlled application, test the wrong loader version without disclosure,
++credit an artifact that was never loaded, repeatedly invoke a broken installer, or
++blame the product for a fixture that failed before product execution.
++
++**Changed paths:** `SKILL.md`, `tools/validate-source.py`, `VERSION`, `SOURCE.json`,
++`CHANGELOG.md`, and `evolution/LEDGER.md`.
++
++**Validation target:** `python tools/validate-source.py`, canonical source diff
++checks, and clean application of the cumulative patch to its frozen base. Canonical
++CI and the evolution guard remain required after any future authorized publication.
++
 +## 2026-10-11 — Human approval-gated milestone closure
 +
 +**Observed issue:** a project completed every executable phase gate and produced a
@@ -275,10 +334,10 @@ index 5978e75..2d56fc3 100644
      [Alias("PackRoot")]
      [string]$RequestedPackRoot = ""
 diff --git a/tools/validate-source.py b/tools/validate-source.py
-index 105ce02..1dd674c 100644
+index 105ce02..723a3b5 100644
 --- a/tools/validate-source.py
 +++ b/tools/validate-source.py
-@@ -89,6 +89,41 @@ def main() -> int:
+@@ -89,6 +89,53 @@ def main() -> int:
      if "github.com/mrwizard94-compile/agents-constitution" not in skill:
          fail("SKILL.md must point at the canonical GitHub repository")
  
@@ -312,6 +371,18 @@ index 105ce02..1dd674c 100644
 +    for requirement in approval_gate_requirements:
 +        if normalize_prose(requirement) not in skill:
 +            fail(f"SKILL.md missing human approval-gate safeguard: {requirement}")
++
++    runtime_control_requirements = (
++        "Runtime-control acceptance chain",
++        "a process ID",
++        "complete the controller handshake",
++        "mismatched target version is auxiliary compatibility evidence only",
++        "the installation remains failed",
++        "Distinguish a third-party fixture construction or handshake failure from a product failure",
++    )
++    for requirement in runtime_control_requirements:
++        if normalize_prose(requirement) not in skill:
++            fail(f"SKILL.md missing runtime-control acceptance safeguard: {requirement}")
 +
 +    resolver = (ROOT / "scripts/resolve-pack.ps1").read_text(encoding="utf-8-sig")
 +    if not re.search(r'\[Alias\(["\']WorkspacePath["\']\)\]\s*\[string\]\$StartPath', resolver, re.IGNORECASE):
