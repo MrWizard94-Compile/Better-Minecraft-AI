@@ -2,7 +2,7 @@
 
 | Risk / limitation | Current control | Required owner / next evidence |
 |---|---|---|
-| Director approval is not yet recorded | Candidate status is explicit; P1 and major AI replacement remain held | Director accepts or rejects the P0 candidate |
+| P0 acceptance is phase-scoped | Acceptance record states that A1 remains `NOT RUN`; no tag, release, installation, or P1 implementation is implied | Scope and approve P1 separately before changing production ownership |
 | OS-conditional Netty transport is excluded from the shared lock state | Exception is limited to `io.netty:netty-transport-native-epoll`; Minecraft metadata keeps version `4.1.97.Final` strict, resolved artifacts remain checksum-verified, and both OS jobs are required | Re-evaluate on Minecraft/NeoForge/Gradle change; fail CI on any unverified artifact |
 | Vanilla-control artifact is loaded | Observer is forced off before mod entry construction and counters stay zero; vanilla navigation performs movement | Add a mod-absent external baseline runner before A1 scoring |
 | P0 scene is simple and only seed 0 | Raw data retained and claims limited to plumbing/non-interference | Freeze multi-scene, ≥3-seed, ≥20-attempt A1 protocol before tuning |

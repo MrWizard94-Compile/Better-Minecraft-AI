@@ -2,7 +2,7 @@
 
 All notable verified project changes are documented here. Planned features are not listed as shipped behavior.
 
-## 0.1.0-p0 — candidate foundation
+## 0.1.0-p0 — accepted foundation
 
 ### Added
 
@@ -15,6 +15,8 @@ All notable verified project changes are documented here. Planned features are n
 - Exact-version hook audit, framework-selection ADR, compatibility matrix, known-upstream-warning ledger, and P0 gate evidence.
 - SHA-pinned Windows/Ubuntu CI with clean-runner dependency verification, paired GameTests, fail-closed analysis, and a required-gates job.
 - Cross-platform verification metadata for Linux-selected native artifacts plus a narrowly scoped, documented Netty native lock exception that retains strict version and checksum controls.
+- Git executable mode `100755` for `gradlew`, so native Unix checkouts retain a directly launchable wrapper.
+- Director acceptance of the evidence-backed P0 milestone on 2026-10-11; no A1 implementation or release authorization is implied.
 
 ### Not included
 

@@ -1,6 +1,6 @@
 # ADR-001: Phase P0/P1 AI integration foundation
 
-- Status: Accepted for the P0 candidate; subject to director acceptance of P0
+- Status: Accepted for P0; director accepted P0 on 2026-10-11
 - Date: 2026-10-09
 - Decision scope: P0 research and the smallest C0 ownership foundation for P1
 - Supersedes: none

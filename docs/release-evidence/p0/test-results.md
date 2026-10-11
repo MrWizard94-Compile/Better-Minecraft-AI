@@ -60,6 +60,8 @@ GitHub Actions [run 38021120525](https://github.com/MrWizard94-Compile/Better-Mi
 
 Its Linux artifact records 5/5 samples per arm, 10/10 successful arrivals, zero exceptions, median/p95 duration 113/114 ticks in both arms, 14 path nodes, zero stalls, a maximum paired final-distance delta of 0.000498 blocks, and zero observer handler time in the control arm. The small difference from the retained local maximum delta of 0.000591 blocks is within the frozen tolerance and is not treated as a performance result.
 
+Accepted candidate commit `5848143e16a48db2da38cd859f663b845cc7e62b` repeated the full matrix in [run 38157185309](https://github.com/MrWizard94-Compile/Better-Minecraft-AI/actions/runs/38157185309). Its artifact again records 5/5 samples per arm, 10/10 arrivals, zero exceptions, identical 113/114-tick median/p95 duration, 14 nodes, zero stalls, zero control-arm observer time, and a maximum paired final-distance delta of 0.000456 blocks.
+
 ## Dedicated server
 
 The retained run contains only Minecraft, NeoForge 21.1.256, and BMAI 0.1.0-p0. It binds `127.0.0.1:0`, reaches ready, receives the standard `stop` command, emits the OBSERVE summary, and saves all dimensions. Gradle exits 0.

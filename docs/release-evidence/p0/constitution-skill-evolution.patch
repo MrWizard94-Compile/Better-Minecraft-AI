@@ -1,10 +1,16 @@
 diff --git a/CHANGELOG.md b/CHANGELOG.md
-index 8aa3e60..896da30 100644
+index 8aa3e60..d880a90 100644
 --- a/CHANGELOG.md
 +++ b/CHANGELOG.md
-@@ -1,5 +1,23 @@
+@@ -1,5 +1,29 @@
  # Changelog
  
++## 5.2.9 — 2026-10-11
++
++- Separate green candidate evidence from explicit human acceptance when a project contract has an approval gate.
++- Forbid inferring milestone approval from commit/push authorization, review activity, silence, or another phase's approval.
++- Require an exact acceptance record while preserving higher-phase gates as `NOT RUN` until independently evidenced.
++
 +## 5.2.8 — 2026-10-11
 +
 +- Require dependency locking and verification on every declared operating-system and architecture target before candidate status.
@@ -27,7 +33,7 @@ index 8aa3e60..896da30 100644
  
  - Validate explicit `PACK_ROOT` candidates and root environment variables before discovery can fall back to another local pack.
 diff --git a/SKILL.md b/SKILL.md
-index baa3990..804e0ab 100644
+index baa3990..4f2598a 100644
 --- a/SKILL.md
 +++ b/SKILL.md
 @@ -12,7 +12,7 @@ description: >
@@ -35,7 +41,7 @@ index baa3990..804e0ab 100644
  metadata:
    short-description: "Enforce AGENTS Constitution pack"
 -  skill-version: "5.2.5"
-+  skill-version: "5.2.8"
++  skill-version: "5.2.9"
    pack-version-pin: "5.1.0"
    canonical-source: "MrWizard94-Compile/Agents-Constitution"
    canonical-url: "https://github.com/MrWizard94-Compile/Agents-Constitution"
@@ -73,7 +79,7 @@ index baa3990..804e0ab 100644
  A path is **valid** only if all exist relative to it:
  
  - `VERSION`
-@@ -210,6 +230,25 @@ or other runtime assembled from third-party components:
+@@ -210,6 +230,43 @@ or other runtime assembled from third-party components:
     runtime acceptance. Credit the repair only after a clean relaunch and the
     relevant behavior flow pass.
  
@@ -96,11 +102,29 @@ index baa3990..804e0ab 100644
 +   was not executed is unverified, even when another target passed an equivalent
 +   build and test command.
 +
++#### Human approval-gated milestone closure
++
++When a project contract requires explicit human acceptance or sign-off:
++
++1. Green executable evidence establishes candidate readiness, not milestone
++   acceptance. Do not mark the milestone complete, advance to the next phase, create
++   a release, or claim human approval from tests alone.
++2. Never infer approval from commit or push authorization, review activity, silence,
++   prior approval of another phase, or permission to continue routine implementation.
++   Await an explicit decision scoped to the named candidate or milestone.
++3. Once a decision arrives, preserve the exact human statement, decision date,
++   accepted immutable revision, accepted limitations, and the boundaries of actions
++   that remain separately authorized.
++4. Keep phase accounting exact: acceptance of one phase does not make higher-phase
++   gates pass. Higher-phase gates remain `NOT RUN` until their own evidence exists.
++5. Record acceptance in the project evidence and verify the acceptance-record commit
++   without rewriting the previously accepted candidate's measurements.
++
  ### Mode: `gate`
  
  1. Resolve `PACK_ROOT`; re-read Section 0 in pack `AGENTS.md` (canonical 15-point checklist).
 diff --git a/SOURCE.json b/SOURCE.json
-index 61c3873..d8ca0f3 100644
+index 61c3873..1332f45 100644
 --- a/SOURCE.json
 +++ b/SOURCE.json
 @@ -1,7 +1,7 @@
@@ -108,25 +132,50 @@ index 61c3873..d8ca0f3 100644
    "schema": 1,
    "name": "agents-constitution",
 -  "skill_version": "5.2.5",
-+  "skill_version": "5.2.8",
++  "skill_version": "5.2.9",
    "pack_version_pin": "5.1.0",
    "canonical_repository": "MrWizard94-Compile/Agents-Constitution",
    "canonical_url": "https://github.com/MrWizard94-Compile/Agents-Constitution",
 diff --git a/VERSION b/VERSION
-index 462faf7..614a37b 100644
+index 462faf7..879fd97 100644
 --- a/VERSION
 +++ b/VERSION
 @@ -1 +1 @@
 -5.2.5
-+5.2.8
++5.2.9
 diff --git a/evolution/LEDGER.md b/evolution/LEDGER.md
-index 6940ad2..0c0386d 100644
+index 6940ad2..cca35fb 100644
 --- a/evolution/LEDGER.md
 +++ b/evolution/LEDGER.md
-@@ -2,6 +2,81 @@
+@@ -2,6 +2,106 @@
  
  The ledger is evidence of evolution. A ledger entry, version bump, changelog edit, or formatting-only diff never counts as the meaningful improvement by itself.
  
++## 2026-10-11 — Human approval-gated milestone closure
++
++**Observed issue:** a project completed every executable phase gate and produced a
++green cross-platform candidate, but its binding acceptance contract still required
++an explicit human decision. Commit and push authorization had already been granted,
++creating a risk that routine repository authority could be mistaken for milestone
++acceptance or that the next phase could start before the actual decision.
++
++**Meaningful improvement:** enforce mode now distinguishes candidate readiness from
++human acceptance, forbids inferring approval from adjacent permissions or silence,
++and requires the exact decision, date, immutable accepted revision, limitations, and
++remaining authorization boundaries to be recorded. It also requires higher-phase
++gates to remain `NOT RUN` until independently evidenced.
++
++**Future failure reduced:** agents are less likely to self-approve a human-gated
++milestone, advance phases from green CI alone, conflate source push permission with
++release authority, or upgrade unevaluated future gates when recording acceptance.
++
++**Changed paths:** `SKILL.md`, `tools/validate-source.py`, `VERSION`, `SOURCE.json`,
++`CHANGELOG.md`, and `evolution/LEDGER.md`.
++
++**Validation target:** `python tools/validate-source.py`, canonical source diff
++checks, and clean application of the cumulative patch to its frozen base. Canonical
++CI and the evolution guard remain required after any future authorized publication.
++
 +## 2026-10-11 — Cross-platform dependency closure before candidate status
 +
 +**Observed issue:** dependency locking and verification passed on a Windows host,
@@ -226,10 +275,10 @@ index 5978e75..2d56fc3 100644
      [Alias("PackRoot")]
      [string]$RequestedPackRoot = ""
 diff --git a/tools/validate-source.py b/tools/validate-source.py
-index 105ce02..2417c30 100644
+index 105ce02..1dd674c 100644
 --- a/tools/validate-source.py
 +++ b/tools/validate-source.py
-@@ -89,6 +89,30 @@ def main() -> int:
+@@ -89,6 +89,41 @@ def main() -> int:
      if "github.com/mrwizard94-compile/agents-constitution" not in skill:
          fail("SKILL.md must point at the canonical GitHub repository")
  
@@ -252,6 +301,17 @@ index 105ce02..2417c30 100644
 +    for requirement in cross_platform_requirements:
 +        if normalize_prose(requirement) not in skill:
 +            fail(f"SKILL.md missing cross-platform dependency safeguard: {requirement}")
++
++    approval_gate_requirements = (
++        "Human approval-gated milestone closure",
++        "candidate readiness, not milestone acceptance",
++        "Never infer approval from commit or push authorization",
++        "preserve the exact human statement",
++        "Higher-phase gates remain `NOT RUN`",
++    )
++    for requirement in approval_gate_requirements:
++        if normalize_prose(requirement) not in skill:
++            fail(f"SKILL.md missing human approval-gate safeguard: {requirement}")
 +
 +    resolver = (ROOT / "scripts/resolve-pack.ps1").read_text(encoding="utf-8-sig")
 +    if not re.search(r'\[Alias\(["\']WorkspacePath["\']\)\]\s*\[string\]\$StartPath', resolver, re.IGNORECASE):

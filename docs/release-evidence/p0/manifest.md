@@ -10,11 +10,13 @@
 | Git branch | `main` |
 | Foundation commit | `9434a5606456b02ed6e81e01963dc1ffa9e03459` |
 | Verified implementation head | `9935c4c320293337b3d24a8bcef5c8b5abc8ffe3` |
-| Evidence-finalization commit | The commit containing this file; exact SHA is reported in the handoff because a commit cannot embed its own SHA |
+| Accepted candidate commit | `5848143e16a48db2da38cd859f663b845cc7e62b` |
+| Acceptance-record commit | The commit containing this file; exact SHA is reported in the handoff because a commit cannot embed its own SHA |
 | Tag | None |
 | Remote | `origin = https://github.com/MrWizard94-Compile/Better-Minecraft-AI.git` |
 | Remote state observed | Initially empty; authorized `main` history is now pushed |
-| Current release status | `P0 CANDIDATE — AWAITING DIRECTOR APPROVAL` |
+| Director acceptance | 2026-10-11; exact statement: `I accept P0` |
+| Current release status | `P0 DONE — DIRECTOR ACCEPTED`; A1 remains entirely `NOT RUN` |
 
 The immutable implementation chain is:
 
@@ -25,7 +27,7 @@ The immutable implementation chain is:
 | `bdee303b896be5db20cb84705206da611fc948f8` | Make the OS-conditional Netty lock treatment portable while retaining exact version and artifact verification |
 | `9935c4c320293337b3d24a8bcef5c8b5abc8ffe3` | Add the Linux-selected LWJGL native checksums; first fully green cross-platform implementation run |
 
-The evidence-finalization commit changes documentation/evolution evidence only. Its exact SHA and its own CI result are reported in the final handoff rather than self-referentially encoded here.
+Commit `5848143e16a48db2da38cd859f663b845cc7e62b` finalized the candidate evidence and passed GitHub Actions run `38157185309` before director acceptance. The acceptance-record commit changes documentation/evolution evidence and corrects only the Unix wrapper's Git mode from `100644` to `100755`; implementation bytes and accepted measurements are unchanged. Its exact SHA and CI result are reported in the final handoff rather than self-referentially encoded here.
 
 ## Direct build pins
 
@@ -83,6 +85,8 @@ GitHub Actions [run 38021120525](https://github.com/MrWizard94-Compile/Better-Mi
 | `p0-gametest-evidence` artifact | ID `11658831409`; 19,503 bytes; SHA-256 `605BC9D375D8669C968B6251252F92F8CF50002C53F9FE0781051737789C3BB8` | Retained by GitHub through 2026-10-24 |
 
 The downloaded CI artifact records commit `9935c4c320293337b3d24a8bcef5c8b5abc8ffe3` on a Linux x64 runner, 5/5 samples in each arm, zero exceptions, median/p95 duration 113/114 ticks in both arms, 14 nodes, zero stalls, maximum paired final-distance delta 0.000498 blocks, and zero observer control-arm time.
+
+Accepted candidate commit `5848143e16a48db2da38cd859f663b845cc7e62b` then passed [run 38157185309](https://github.com/MrWizard94-Compile/Better-Minecraft-AI/actions/runs/38157185309) with the same four required jobs green and zero annotations. Its `p0-gametest-evidence` artifact is ID `11709680150`, 19,593 bytes, SHA-256 `8DB66BEACB8C026E331522584FF529330C69A989F75B266CFE9A9480F929B385`, retained through 2026-10-25; the maximum paired final-distance delta was 0.000456 blocks and all categorical outcomes remained matched.
 
 ## Source/evidence inventory
 

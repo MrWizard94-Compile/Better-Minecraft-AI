@@ -8,7 +8,7 @@ This checklist mirrors the P0 contract in `Codex_P0_Kickoff_Better_Minecraft_AI.
 - [x] `origin` is exactly `https://github.com/MrWizard94-Compile/Better-Minecraft-AI.git`; the remote was initially empty and now contains the authorized `main` history.
 - [x] Complete wrapper and Java 21 settings committed and pushed.
 - [x] Windows wrapper launches.
-- [x] Unix wrapper script retained; launch verification is recorded in the evidence package.
+- [x] Unix wrapper script retained with Git mode `100755`; launch verification is recorded in the evidence package.
 - [x] Exact Gradle, ModDevGradle, Minecraft, NeoForge, mappings, Java, Checkstyle, JaCoCo, JUnit, and nullness pins documented.
 - [x] Dependency locks and SHA-256 verification metadata generated.
 - [x] `clean build` configured to fail on compiler warnings, Checkstyle findings, test failures, and domain coverage regression.
@@ -50,9 +50,9 @@ This checklist mirrors the P0 contract in `Codex_P0_Kickoff_Better_Minecraft_AI.
 - [x] Analyzer validates schema, matching, outcome completeness, exceptions, and control isolation.
 - [x] Scope and measurement limitations prevent P0 data from being marketed as an improvement or A1 performance result.
 - [x] README, config example, build environment, hook audit, ADR, baseline, warning ledger, notices, changelog, CI workflow, and evidence-package documents present.
-- [x] GitHub Actions observed green on Windows and native Ubuntu, including both paired GameTest arms and the required-gates job ([run 38021120525](https://github.com/MrWizard94-Compile/Better-Minecraft-AI/actions/runs/38021120525)).
-- [ ] Director accepts the P0 candidate.
+- [x] GitHub Actions observed green on Windows and native Ubuntu for the accepted candidate, including both paired GameTest arms and the required-gates job ([run 38157185309](https://github.com/MrWizard94-Compile/Better-Minecraft-AI/actions/runs/38157185309)).
+- [x] Director accepted the P0 candidate on 2026-10-11 with the exact statement `I accept P0`.
 
 ## Stop condition
 
-Do not implement P1 until the director explicitly accepts P0. The next smallest P1 task after acceptance is the MC-free profile/mode transition model and C0 allow-list contract—still without shipping enhanced navigation.
+P0 is accepted and complete. The next smallest P1 task, if separately authorized, is the MC-free profile/mode transition model and C0 allow-list contract—still without shipping enhanced navigation. No P1 work is part of this acceptance record.

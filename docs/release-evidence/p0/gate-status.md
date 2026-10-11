@@ -17,8 +17,8 @@
 
 ## Gate interpretation
 
-P0-01 through P0-05 have executed evidence and pass. The implementation head is committed, pushed, and green on native Windows and Ubuntu runners.
+P0-01 through P0-05 have executed evidence and pass. Accepted candidate `5848143e16a48db2da38cd859f663b845cc7e62b` is committed, pushed, and green on native Windows and Ubuntu runners in run `38157185309`.
 
-Current status: **P0 CANDIDATE — AWAITING DIRECTOR APPROVAL**. The corresponding Constitution review is recorded in the [Section 0 self-audit](section-0-self-audit.md).
+Current status: **P0 DONE — DIRECTOR ACCEPTED 2026-10-11**. The director's exact statement and phase-scoped acceptance record are in the [release decision](release-decision.md). The corresponding Constitution review is recorded in the [Section 0 self-audit](section-0-self-audit.md).
 
 No A1 status is inferred from the P0 ownership proof. All A1 rows remain `NOT RUN` exactly as required for phase separation.

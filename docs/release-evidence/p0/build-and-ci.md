@@ -35,6 +35,7 @@ Local commands ran from the repository root on 2026-10-09 through 2026-10-11. Re
 - Runtime JAR: 27,061 bytes, SHA-256 `392EFB9F3A7AC14AC3E6E03D1B578AB14B592279126EF54EC849C8394A603043`.
 - Source JAR: 12,757 bytes, SHA-256 `D923FC4551ABB5367671EA9426C442ABEA3FC6635E24929B3D56651C6AD47B3A`.
 - Built JAR contains no AzureCortex, SmartBrainLib, Sable, or Sable Pathfinder class-name match.
+- `gradlew` is tracked with Git executable mode `100755`; CI retains a defensive `chmod +x` step for archive/filesystem transports that may not preserve mode metadata.
 
 Build reports are generated under ignored `build/reports/` and can be reproduced with the commands above. The retained gate facts are recorded here so the evidence package does not depend on a local ignored directory.
 
@@ -60,6 +61,8 @@ Automatic release/publish behavior is absent.
 | Required gates | `114122471112` | SUCCESS |
 
 The retained `p0-gametest-evidence` artifact is ID `11658831409`, 19,503 bytes, with GitHub digest `sha256:605bc9d375d8669c968b6251252f92f8cf50002c53f9fe0781051737789c3bb8`. The downloaded bundle identifies Linux x64 and commit `9935c4c320293337b3d24a8bcef5c8b5abc8ffe3`; it contains five successful samples per arm, zero exceptions, median/p95 duration 113/114 ticks in both arms, 14 path nodes, zero stalls, maximum paired final-distance delta 0.000498 blocks, and zero observer time in the control arm.
+
+The later accepted candidate `5848143e16a48db2da38cd859f663b845cc7e62b` independently repeated every required job in [run 38157185309](https://github.com/MrWizard94-Compile/Better-Minecraft-AI/actions/runs/38157185309): Ubuntu job `114522474492`, Windows job `114522474661`, paired GameTests job `114522474665`, and required-gates job `114522878971` all succeeded with zero annotations. Artifact ID `11709680150` is 19,593 bytes with digest `sha256:8db66beacb8c026e331522584ff529330c69a989f75b266cfe9a9480f929b385`; its final-distance delta is 0.000456 blocks and all other categorical/duration/node/stall outcomes remain matched.
 
 ## Repair history retained for auditability
 
