@@ -1,6 +1,6 @@
 # Phase P0 build and CI evidence
 
-All commands ran from the repository root on 2026-10-09. Exit status `0` means the process completed successfully; runtime proof is linked separately rather than inferred from Gradle compilation.
+Local commands ran from the repository root on 2026-10-09 through 2026-10-11. Remote clean-runner evidence is from GitHub Actions on 2026-10-11. Exit status `0` means the process completed successfully; runtime proof is linked separately rather than inferred from Gradle compilation.
 
 ## Accepted commands
 
@@ -8,11 +8,11 @@ All commands ran from the repository root on 2026-10-09. Exit status `0` means t
 |---|---:|---|
 | `git init -b main` | 0 | Nested project repository initialized without touching the parent WPAI repository. |
 | `git remote add origin https://github.com/MrWizard94-Compile/Better-Minecraft-AI.git` | 0 | Exact requested remote configured. |
-| `git ls-remote --symref origin HEAD` / `git ls-remote origin` | 0 | Remote reachable; no remote refs returned. |
+| `git ls-remote --symref origin HEAD` / `git ls-remote origin` | 0 | Remote reachable and initially empty before the authorized history was pushed. |
 | Official MDK `gradlew.bat --version` before import | 0 | Official scaffold wrapper launched. |
 | `.\gradlew.bat --no-daemon --warning-mode fail dependencies --write-locks --write-verification-metadata sha256` | 0 | Lockfile and component SHA-256 verification metadata generated. |
 | `.\gradlew.bat --version` | 0 | Gradle 9.2.1, Temurin 21.0.10; Windows launcher works. |
-| `C:\Program Files\Git\bin\bash.exe ./gradlew --version` | 0 | POSIX wrapper script launches through Git Bash and reports the same Gradle/JDK. Actual Ubuntu execution is delegated to CI and remains unobserved until an authorized push. |
+| `C:\Program Files\Git\bin\bash.exe ./gradlew --version` | 0 | POSIX wrapper script launches through Git Bash and reports the same Gradle/JDK; native Ubuntu execution is independently green in CI. |
 | `.\gradlew.bat --no-daemon --warning-mode fail clean build printBuildEnvironment dependencies` | 0 | `BUILD SUCCESSFUL` in 13 s; 15 tasks executed/from cache; direct pins printed; dependency graph resolved under locks/verification. |
 | `.\gradlew.bat --no-daemon --warning-mode fail test checkstyleMain checkstyleTest jacocoTestCoverageVerification jacocoTestReport --rerun-tasks` | 0 | `BUILD SUCCESSFUL` in 18 s; all 10 tasks executed rather than served from Gradle task cache. |
 | `.\gradlew.bat --no-daemon --warning-mode fail runGameTestServer ... vanilla_control ...` | 0 | Seven required GameTests passed; accepted log/raw CSV copied. |
@@ -24,6 +24,7 @@ All commands ran from the repository root on 2026-10-09. Exit status `0` means t
 | Python/PyYAML read-only parse of `.github/workflows/ci.yml` | 0 | YAML parsed with exactly `build`, `gametest`, and `required-gates` jobs. |
 | PowerShell AST parse of `tools/AnalyzeP0Benchmark.ps1` | 0 | Zero syntax errors. |
 | Per-file `git diff --no-index --check` over 43 non-log text files | 0 (custom aggregate) | Zero authored whitespace errors; supplied Markdown hard breaks are covered by explicit attributes and raw runtime logs are retained as evidence. |
+| GitHub Actions run `38021120525` | 0 | Windows build, native Ubuntu build, paired P0 GameTests, and required-gates jobs all succeeded for implementation head `9935c4c320293337b3d24a8bcef5c8b5abc8ffe3`. |
 
 ## Build results
 
@@ -49,7 +50,16 @@ Build reports are generated under ignored `build/reports/` and can be reproduced
 
 Automatic release/publish behavior is absent.
 
-**GitHub Actions: NOT RUN.** The remote is empty, and neither a commit nor push is authorized. Workflow syntax and local constituent commands are green; that is not represented as remote CI success.
+**GitHub Actions: PASS for the implementation head.** [Run 38021120525](https://github.com/MrWizard94-Compile/Better-Minecraft-AI/actions/runs/38021120525) completed with no GitHub annotations:
+
+| Job | Job ID | Result |
+|---|---:|---|
+| Paired P0 GameTests | `114122114622` | SUCCESS |
+| Ubuntu build | `114122114688` | SUCCESS |
+| Windows build | `114122114730` | SUCCESS |
+| Required gates | `114122471112` | SUCCESS |
+
+The retained `p0-gametest-evidence` artifact is ID `11658831409`, 19,503 bytes, with GitHub digest `sha256:605bc9d375d8669c968b6251252f92f8cf50002c53f9fe0781051737789c3bb8`. The downloaded bundle identifies Linux x64 and commit `9935c4c320293337b3d24a8bcef5c8b5abc8ffe3`; it contains five successful samples per arm, zero exceptions, median/p95 duration 113/114 ticks in both arms, 14 path nodes, zero stalls, maximum paired final-distance delta 0.000498 blocks, and zero observer time in the control arm.
 
 ## Repair history retained for auditability
 
@@ -62,3 +72,14 @@ Early diagnostic runs were not accepted as evidence:
 - the first dedicated smoke inherited a broad generated bind and was interrupted; it was rejected and replaced with the tracked loopback-only configuration plus a normal `stop` shutdown.
 
 The benchmark analyzer's first packaging run exposed a PowerShell join-precedence defect and exited nonzero; the expression was fixed, syntax-checked, and the accepted analyzer run exits 0. No failed or insecure run is used as PASS evidence.
+
+Clean-runner CI also found issues that the warmed Windows development cache could not expose:
+
+- run `37991429529` rejected incomplete verification metadata for JUnit and Guava metadata files;
+- run `38020508666` passed Windows but Linux selected `io.netty:netty-transport-native-epoll:4.1.97.Final`, which cannot be represented portably in a lock produced by the Windows resolution graph;
+- run `38020958427` passed Windows and the lock treatment, then rejected eight Linux-selected LWJGL native artifacts whose checksums were absent; and
+- run `38021120525` passed after the missing metadata/native checksums were corroborated against authoritative repositories and recorded.
+
+The repair does not disable verification. Only the OS-conditional Netty native module is omitted from the shared lock state; its version remains fixed by strict Minecraft metadata and its artifacts remain checksum-verified. Linux and Windows remain required matrix jobs. Checkout, Java setup, Gradle setup, and artifact upload actions were also moved to SHA-pinned Node 24-capable revisions; Gradle Actions v5 was deliberately retained because v6 introduces additional proprietary caching terms.
+
+Two diagnostic command failures are retained as non-evidence: one analyzer invocation used obsolete parameters before being corrected to the documented interface, and one isolated metadata experiment used the wrong working directory/Gradle user-home placement and was rejected by `clean`. Neither result is counted as an accepted gate.

@@ -4,7 +4,7 @@
 |---|---|---|---|
 | Windows wrapper | Gradle 9.2.1, Temurin 21.0.10 | PASS | `gradlew.bat --version` exit 0. |
 | POSIX wrapper script on available host | Gradle 9.2.1 via Git Bash | PASS | `bash ./gradlew --version` exit 0. This proves script launch, not a native Linux/macOS filesystem/runtime. |
-| Native Ubuntu CI | Workflow `ubuntu-24.04` | NOT RUN | Workflow present; remote has no authorized commit/push. |
+| Native Ubuntu CI | Workflow `ubuntu-24.04`; implementation head `9935c4c320293337b3d24a8bcef5c8b5abc8ffe3` | PASS | Clean build/dependency verification and both paired GameTest arms passed in [run 38021120525](https://github.com/MrWizard94-Compile/Better-Minecraft-AI/actions/runs/38021120525). |
 | BMAI vanilla-control GameTest | Minecraft 1.21.1, NeoForge 21.1.256, BMAI 0.1.0-p0; observation forced false | PASS | 7/7; all observer counters zero; 5/5 raw navigation trials. |
 | BMAI OBSERVE GameTest | Same, observation forced true | PASS | 7/7; controller identities unchanged; post-tick samples retained; 5/5 navigation trials. |
 | Dedicated server, BMAI only | Minecraft 1.21.1, NeoForge 21.1.256, BMAI 0.1.0-p0 | PASS | Loopback/ephemeral port, online mode, ready → standard stop → all dimensions saved. No external client joined. |

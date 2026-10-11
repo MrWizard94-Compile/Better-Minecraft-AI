@@ -13,6 +13,8 @@ All notable verified project changes are documented here. Planned features are n
 - Matched vanilla-control/OBSERVE raw baseline samples and a fail-closed analysis script.
 - Dedicated-server and integrated-client smoke procedures and retained logs.
 - Exact-version hook audit, framework-selection ADR, compatibility matrix, known-upstream-warning ledger, and P0 gate evidence.
+- SHA-pinned Windows/Ubuntu CI with clean-runner dependency verification, paired GameTests, fail-closed analysis, and a required-gates job.
+- Cross-platform verification metadata for Linux-selected native artifacts plus a narrowly scoped, documented Netty native lock exception that retains strict version and checksum controls.
 
 ### Not included
 

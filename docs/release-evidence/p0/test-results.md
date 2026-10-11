@@ -54,6 +54,12 @@ The analyzer accepted exactly 5 samples per arm and rejected no rows:
 
 Short-run rolling tick-time values differed and are deliberately not interpreted as a performance change. See [benchmark-summary.md](benchmark-summary.md) and [BASELINE.md](../../benchmarks/BASELINE.md).
 
+## Remote clean-runner confirmation
+
+GitHub Actions [run 38021120525](https://github.com/MrWizard94-Compile/Better-Minecraft-AI/actions/runs/38021120525) independently passed the Windows build, native Ubuntu build, paired P0 GameTests, and required-gates jobs for commit `9935c4c320293337b3d24a8bcef5c8b5abc8ffe3`.
+
+Its Linux artifact records 5/5 samples per arm, 10/10 successful arrivals, zero exceptions, median/p95 duration 113/114 ticks in both arms, 14 path nodes, zero stalls, a maximum paired final-distance delta of 0.000498 blocks, and zero observer handler time in the control arm. The small difference from the retained local maximum delta of 0.000591 blocks is within the frozen tolerance and is not treated as a performance result.
+
 ## Dedicated server
 
 The retained run contains only Minecraft, NeoForge 21.1.256, and BMAI 0.1.0-p0. It binds `127.0.0.1:0`, reaches ready, receives the standard `stop` command, emits the OBSERVE summary, and saves all dimensions. Gradle exits 0.

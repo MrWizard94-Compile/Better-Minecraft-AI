@@ -2,31 +2,21 @@
 
 ## Current decision
 
-**P0 BLOCKED**
+**P0 CANDIDATE — AWAITING DIRECTOR APPROVAL**
 
-The implementation/evidence work for P0-02 through P0-05 is green, and every executable local subcheck of P0-01 is green. P0 still cannot be called a candidate because the mandatory contract requires the complete wrapper and source state to be committed. This repository has no commits, and WPAI governance reserves commit authority to the director.
+P0-01 through P0-05 are green. The complete foundation, dependency-verification repairs, and native Linux verification are committed and pushed through implementation head `9935c4c320293337b3d24a8bcef5c8b5abc8ffe3`. GitHub Actions [run 38021120525](https://github.com/MrWizard94-Compile/Better-Minecraft-AI/actions/runs/38021120525) passed the Windows build, Ubuntu build, paired P0 GameTests, and required-gates jobs.
 
-No tag, push, release, package publication, distribution, or external message has occurred.
+No tag, GitHub release, package publication, installation, distribution, or external announcement has occurred. The authorized commits and pushes are source/evidence delivery only.
 
-## Smallest unblock action
+## Remaining approval action
 
-The director authorizes a local P0 foundation commit. Codex then:
+The director reviews this evidence package and explicitly accepts or rejects the P0 candidate. Acceptance may authorize P1 planning; it does not silently authorize a tag, public release, package installation, or distribution.
 
-1. performs the final secret/status/whitespace audit;
-2. stages the exact candidate files;
-3. creates the authorized commit without pushing;
-4. records the immutable SHA in this evidence package; and
-5. reruns the clean local gate against that committed state.
-
-A push and GitHub CI execution are separate authorizations. They are useful before later delivery but are not silently bundled into the requested local commit.
-
-## Candidate acceptance statement after unblock
-
-If the post-commit rerun remains green, the accurate P0 statement will be:
+The accurate candidate statement is:
 
 > The project builds, instruments without modifying AI, has repeatable tests and baseline, and has an evidence-backed zombie enhancement insertion strategy.
 
-The status at that point becomes `P0 CANDIDATE — AWAITING DIRECTOR APPROVAL`. Only explicit director acceptance can complete the P0 approval gate and authorize moving to P1.
+Only explicit director acceptance can complete the P0 approval gate and authorize moving to P1.
 
 ## P1 hold
 

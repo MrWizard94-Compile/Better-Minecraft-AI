@@ -12,7 +12,7 @@ P0 provides:
 - dedicated-server and integrated-client smoke evidence; and
 - exact-source hook and external-framework decision records.
 
-The Phase P0 gate remains subject to an authorized Git commit and director acceptance. Phase P1 and all major AI replacement work are deliberately out of scope.
+The committed and cross-platform-verified Phase P0 candidate is awaiting explicit director acceptance. Phase P1 and all major AI replacement work are deliberately out of scope until that approval is recorded.
 
 ## Supported environment
 
@@ -108,7 +108,7 @@ Known boundaries:
 - no global mixins, blanket goal clearing, entity-tick cancellation, forced chunk loading, background world access, GOAP, LLM, or asynchronous A*;
 - unknown modded mobs, Brain-based entities, bosses, and specialist navigators are untouched;
 - AzureCortex, SmartBrainLib, and Sable Pathfinder are research/interoperability subjects only, not dependencies;
-- GitHub CI is defined but cannot be observed until an authorized commit/push; and
+- Windows and native Ubuntu GitHub CI are green for the implementation head in [run 38021120525](https://github.com/MrWizard94-Compile/Better-Minecraft-AI/actions/runs/38021120525); and
 - upstream development-runtime warnings are catalogued in [KNOWN_UPSTREAM_WARNINGS.md](docs/KNOWN_UPSTREAM_WARNINGS.md), not suppressed.
 
-Do not begin P1 until the P0 candidate has been committed and explicitly accepted by the director.
+Do not begin P1 until the director explicitly accepts this P0 candidate.

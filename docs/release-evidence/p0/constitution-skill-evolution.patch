@@ -1,10 +1,16 @@
 diff --git a/CHANGELOG.md b/CHANGELOG.md
-index 8aa3e60..e34b084 100644
+index 8aa3e60..896da30 100644
 --- a/CHANGELOG.md
 +++ b/CHANGELOG.md
-@@ -1,5 +1,17 @@
+@@ -1,5 +1,23 @@
  # Changelog
  
++## 5.2.8 — 2026-10-11
++
++- Require dependency locking and verification on every declared operating-system and architecture target before candidate status.
++- Treat single-host dependency metadata as insufficient evidence for target-selected natives, classifiers, POMs, and module metadata.
++- Require checksum corroboration when available and narrowly scoped exceptions that retain exact-version and artifact-integrity verification.
++
 +## 5.2.7 — 2026-10-09
 +
 +- Add a fail-closed, truth-preserving fallback when a host-required read-only workspace intake provider is unavailable.
@@ -21,7 +27,7 @@ index 8aa3e60..e34b084 100644
  
  - Validate explicit `PACK_ROOT` candidates and root environment variables before discovery can fall back to another local pack.
 diff --git a/SKILL.md b/SKILL.md
-index baa3990..5c00ed3 100644
+index baa3990..804e0ab 100644
 --- a/SKILL.md
 +++ b/SKILL.md
 @@ -12,7 +12,7 @@ description: >
@@ -29,7 +35,7 @@ index baa3990..5c00ed3 100644
  metadata:
    short-description: "Enforce AGENTS Constitution pack"
 -  skill-version: "5.2.5"
-+  skill-version: "5.2.7"
++  skill-version: "5.2.8"
    pack-version-pin: "5.1.0"
    canonical-source: "MrWizard94-Compile/Agents-Constitution"
    canonical-url: "https://github.com/MrWizard94-Compile/Agents-Constitution"
@@ -67,8 +73,34 @@ index baa3990..5c00ed3 100644
  A path is **valid** only if all exist relative to it:
  
  - `VERSION`
+@@ -210,6 +230,25 @@ or other runtime assembled from third-party components:
+    runtime acceptance. Credit the repair only after a clean relaunch and the
+    relevant behavior flow pass.
+ 
++#### Cross-platform dependency closure
++
++When a project declares more than one supported operating system or architecture:
++
++1. Exercise dependency locking and verification on every declared target before
++   naming a build or release candidate. A lock or verification report produced on
++   one host is not evidence for native libraries, classifiers, POMs, or module
++   metadata selected only on another target.
++2. Record exact versions and verify platform-selected artifacts with published
++   checksums. When two authoritative repositories expose the same artifact, compare
++   their checksums before admitting newly discovered native or classifier files.
++3. Do not weaken dependency locking or verification globally to accommodate an
++   operating-system-specific resolution difference. Any exception must be narrow,
++   documented, and retain exact-version constraints plus artifact verification for
++   the excluded dependency.
++4. Treat every declared target as a required clean-runner gate. A matrix entry that
++   was not executed is unverified, even when another target passed an equivalent
++   build and test command.
++
+ ### Mode: `gate`
+ 
+ 1. Resolve `PACK_ROOT`; re-read Section 0 in pack `AGENTS.md` (canonical 15-point checklist).
 diff --git a/SOURCE.json b/SOURCE.json
-index 61c3873..ab96963 100644
+index 61c3873..d8ca0f3 100644
 --- a/SOURCE.json
 +++ b/SOURCE.json
 @@ -1,7 +1,7 @@
@@ -76,25 +108,52 @@ index 61c3873..ab96963 100644
    "schema": 1,
    "name": "agents-constitution",
 -  "skill_version": "5.2.5",
-+  "skill_version": "5.2.7",
++  "skill_version": "5.2.8",
    "pack_version_pin": "5.1.0",
    "canonical_repository": "MrWizard94-Compile/Agents-Constitution",
    "canonical_url": "https://github.com/MrWizard94-Compile/Agents-Constitution",
 diff --git a/VERSION b/VERSION
-index 462faf7..32a4068 100644
+index 462faf7..614a37b 100644
 --- a/VERSION
 +++ b/VERSION
 @@ -1 +1 @@
 -5.2.5
-+5.2.7
++5.2.8
 diff --git a/evolution/LEDGER.md b/evolution/LEDGER.md
-index 6940ad2..7853dba 100644
+index 6940ad2..0c0386d 100644
 --- a/evolution/LEDGER.md
 +++ b/evolution/LEDGER.md
-@@ -2,6 +2,54 @@
+@@ -2,6 +2,81 @@
  
  The ledger is evidence of evolution. A ledger entry, version bump, changelog edit, or formatting-only diff never counts as the meaningful improvement by itself.
  
++## 2026-10-11 — Cross-platform dependency closure before candidate status
++
++**Observed issue:** dependency locking and verification passed on a Windows host,
++but a clean Linux runner selected additional native transport and LWJGL classifier
++artifacts that were absent from the Windows-generated lock and verification state.
++A single-host report therefore overstated closure for a declared multi-platform
++build.
++
++**Meaningful improvement:** enforce mode now requires dependency locking and
++verification on every declared operating-system and architecture target before
++candidate status. It explicitly covers target-selected natives, classifiers, POMs,
++and module metadata; requires authoritative checksum corroboration when available;
++and permits only narrow documented exceptions that preserve exact-version and
++artifact-integrity checks.
++
++**Future failure reduced:** agents are less likely to certify dependency closure
++from one development host, disable verification broadly when a clean runner finds
++an OS-specific artifact, or discover missing native checksums only after delivery.
++
++**Changed paths:** `SKILL.md`, `tools/validate-source.py`, `VERSION`, `SOURCE.json`,
++`CHANGELOG.md`, and `evolution/LEDGER.md`.
++
++**Validation target:** `python tools/validate-source.py`, canonical source diff
++checks, and a clean application of the cumulative patch followed by the same
++validator. Canonical CI and the evolution guard remain required after any future
++authorized publication.
++
 +## 2026-10-09 — Truth-preserving fallback for unavailable host intake
 +
 +**Observed issue:** a host required a named read-only workspace intake provider,
@@ -167,10 +226,10 @@ index 5978e75..2d56fc3 100644
      [Alias("PackRoot")]
      [string]$RequestedPackRoot = ""
 diff --git a/tools/validate-source.py b/tools/validate-source.py
-index 105ce02..546c4c7 100644
+index 105ce02..2417c30 100644
 --- a/tools/validate-source.py
 +++ b/tools/validate-source.py
-@@ -89,6 +89,19 @@ def main() -> int:
+@@ -89,6 +89,30 @@ def main() -> int:
      if "github.com/mrwizard94-compile/agents-constitution" not in skill:
          fail("SKILL.md must point at the canonical GitHub repository")
  
@@ -182,6 +241,17 @@ index 105ce02..546c4c7 100644
 +    for requirement in intake_requirements:
 +        if normalize_prose(requirement) not in skill:
 +            fail(f"SKILL.md missing host-intake safeguard: {requirement}")
++
++    cross_platform_requirements = (
++        "Cross-platform dependency closure",
++        "every declared target",
++        "one host is not evidence for native libraries",
++        "Do not weaken dependency locking or verification globally",
++        "retain exact-version constraints plus artifact verification",
++    )
++    for requirement in cross_platform_requirements:
++        if normalize_prose(requirement) not in skill:
++            fail(f"SKILL.md missing cross-platform dependency safeguard: {requirement}")
 +
 +    resolver = (ROOT / "scripts/resolve-pack.ps1").read_text(encoding="utf-8-sig")
 +    if not re.search(r'\[Alias\(["\']WorkspacePath["\']\)\]\s*\[string\]\$StartPath', resolver, re.IGNORECASE):

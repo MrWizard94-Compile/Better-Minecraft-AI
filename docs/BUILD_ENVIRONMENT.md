@@ -61,4 +61,8 @@ Both OS values are retained because Windows exposes a legacy `ProductName` strin
 .\gradlew.bat --no-daemon --warning-mode fail dependencies
 ```
 
-On a Unix-like host, run `chmod +x ./gradlew` once and use the same arguments with `./gradlew`. Dependency verification fails the build when a resolved artifact checksum is absent or mismatched; dependency locking prevents silent transitive drift.
+On a Unix-like host, run `chmod +x ./gradlew` once and use the same arguments with `./gradlew`. Native Ubuntu execution is verified by GitHub Actions [run 38021120525](https://github.com/MrWizard94-Compile/Better-Minecraft-AI/actions/runs/38021120525).
+
+Dependency verification fails the build when a resolved artifact checksum is absent or mismatched. Dependency locking prevents silent transitive drift except for one documented OS-conditional module: `io.netty:netty-transport-native-epoll` is excluded from the shared lock state because it is selected only by the Linux resolution graph. This is not a version or integrity bypass: Minecraft metadata constrains it strictly to `4.1.97.Final`, both resolved Linux artifacts are covered by SHA-256 verification metadata, and the required Windows/Ubuntu CI matrix exercises both dependency graphs.
+
+Linux-selected LWJGL native classifiers are also explicitly checksum-verified. Newly discovered cross-platform metadata and native hashes were compared between Maven Central and the corresponding authoritative NeoForged, Mojang Libraries, or upstream repository before admission.
